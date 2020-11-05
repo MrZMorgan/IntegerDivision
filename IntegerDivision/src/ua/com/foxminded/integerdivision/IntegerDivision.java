@@ -4,17 +4,19 @@ public class IntegerDivision {
 	private StringBuilder result = new StringBuilder();
     private StringBuilder quotient = new StringBuilder();
     private StringBuilder reminder= new StringBuilder();
+    private int inputDividend;
+    private int inputDivider;
 
-    public String makeDivision(int dividend, int divider) {
-        if (divider == 0) {
+    public String makeDivision(int inputDividend, int inputDivider) {
+        if (inputDivider == 0) {
             throw new IllegalArgumentException("Делить на ноль нельзя");
         }
 
-        dividend = Math.abs(dividend);
-        divider = Math.abs(divider);
+        int dividend = Math.abs(inputDividend);
+        int divider = Math.abs(inputDivider);
 
         if (dividend < divider) {
-            return "" + dividend + "/" + divider + " = 0";
+            return "" + inputDividend + "/" + divider + " = 0";
         }
 
         String[] digits = String.valueOf(dividend).split("");
@@ -62,7 +64,7 @@ public class IntegerDivision {
         return assemblyString(tab, ' ') + assemblyString(calculateDigit(reminderNumber), '-');
     }
 
-    private void modifyResultToView(int dividend, int divisor) {
+    private void modifyResultToView(int dividend, int divider) {
         int[] index = new int[3];
         for (int i = 0, j = 0; i < result.length(); i++) {
             if (result.charAt(i) == '\n') {
@@ -78,13 +80,14 @@ public class IntegerDivision {
         int tab = calculateDigit(dividend) + 1 - index[0];
         result.insert(index[2], assemblyString(tab, ' ') +"│" + quotient.toString());
         result.insert(index[1], assemblyString(tab, ' ') +"│" + assemblyString(quotient.length(), '-'));
-        result.insert(index[0], "│" + divisor);
+        result.insert(index[0], "│" + divider);
         result.replace(1, index[0], String.valueOf(dividend));
     }
 
     private int calculateDigit(int i) {
         return (int) Math.log10(i) + 1;
     }
+    
     private String assemblyString(int numberOfSymbols, char symbol) {
         StringBuilder string = new StringBuilder();
         for (int i = 0; i < numberOfSymbols; i++) {
