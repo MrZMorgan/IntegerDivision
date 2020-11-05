@@ -3,20 +3,18 @@ package ua.com.foxminded.integerdivision;
 public class IntegerDivision {
 	private StringBuilder result = new StringBuilder();
     private StringBuilder quotient = new StringBuilder();
-    private StringBuilder reminder= new StringBuilder();
-    private int inputDividend;
-    private int inputDivider;
+    private StringBuilder reminder= new StringBuilder(); 
 
-    public String makeDivision(int inputDividend, int inputDivider) {
-        if (inputDivider == 0) {
+    public String makeDivision(int dividend, int divider) {
+        if (divider == 0) {
             throw new IllegalArgumentException("Делить на ноль нельзя");
         }
 
-        int dividend = Math.abs(inputDividend);
-        int divider = Math.abs(inputDivider);
+        dividend = Math.abs(dividend);
+        divider = Math.abs(divider);
 
         if (dividend < divider) {
-            return "" + inputDividend + "/" + divider + " = 0";
+            return "" + dividend + "/" + divider + " = 0";
         }
 
         String[] digits = String.valueOf(dividend).split("");
