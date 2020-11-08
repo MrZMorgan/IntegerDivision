@@ -1,17 +1,24 @@
 package ua.com.foxminded.integerdivision;
-
 import java.util.Scanner;
 
 public class Solution {
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         int dividend = readDigit();
         int divider = readDigit();
-        IntegerDivision integerDivision = new IntegerDivision();
-        System.out.println(integerDivision.makeDivision(dividend, divider));
+
+        LongDivisionCalculator calculator = new LongDivisionCalculator(dividend, divider);
+        String[] digits = calculator.getDigitsFromDividen();
+        calculator.longDivision(digits);
+
+        CalculatorDTO dto = new CalculatorDTO();
+        dto.collectAllData(calculator);
+
+        Formatter formatter = new Formatter(dto);
+        formatter.printResult();
     }
 
     public static int readDigit() {
-        Scanner scaner = new Scanner(System.in);
-        return scaner.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
     }
 }
