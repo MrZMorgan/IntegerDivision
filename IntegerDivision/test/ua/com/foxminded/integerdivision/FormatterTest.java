@@ -23,15 +23,10 @@ class FormatterTest {
 		int divider = 654;
 		
 		LongDivisionCalculator calculator = new LongDivisionCalculator(dividend, divider);
-		String[] digits = calculator.getDigitsFromDividen();
-		calculator.longDivision(digits);
-		
-		CalculatorDTO dto = new CalculatorDTO();
-        dto.collectAllData(calculator);
+        CalculatorDTO dto = calculator.longDivision();
+        Formatter formatter = new Formatter();
         
-        Formatter formatter = new Formatter(dto);
-        
-		String actual = formatter.createResult();
+		String actual = formatter.createResult(dto);
 		assertEquals(DIVISION_EXPECTED_RESULT, actual);
 	}
 	
@@ -41,8 +36,7 @@ class FormatterTest {
 		int divider = 0;
 		
 		LongDivisionCalculator calculator = new LongDivisionCalculator(dividend, divider);
-		String[] digits = calculator.getDigitsFromDividen();
-		assertThrows(IllegalArgumentException.class, () -> calculator.longDivision(digits));
+		assertThrows(IllegalArgumentException.class, () -> calculator.longDivision());
 	}
 	
 	@Test
@@ -51,17 +45,10 @@ class FormatterTest {
 		int divider = 123;
 		
 		LongDivisionCalculator calculator = new LongDivisionCalculator(dividend, divider);
-		String[] digits = calculator.getDigitsFromDividen();
-		calculator.longDivision(digits);
-		
-		CalculatorDTO dto = new CalculatorDTO();
-        dto.collectAllData(calculator);
+        CalculatorDTO dto = calculator.longDivision();
+        Formatter formatter = new Formatter();
         
-        Formatter formatter = new Formatter(dto);
-        
-		String actual = formatter.createResult();
-		
+		String actual = formatter.createResult(dto);		
 		assertEquals(ZERO_DIVIDEND_EXPECTED_RESULT, actual);
 	}
-
 }
