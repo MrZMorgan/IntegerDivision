@@ -4,139 +4,149 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LongDivisionCalculator {
-	private int dividend;
-	private int divider;
+    private int dividend;
+    private int divider;
 
-	private int remainder;
-	private int result;
+    private int remainder;
+    private int result;
 
-	private List<Integer> dividendsTMP = new ArrayList<>();
-	private List<Integer> dividersTMP = new ArrayList<>();
-	private List<Integer> zerosBeforeDividend = new ArrayList<>();
-	private List<Integer> zerosBeforeDivider = new ArrayList<>();
+    private final List<Integer> dividendsTMP = new ArrayList<>();
+    private final List<Integer> dividersTMP = new ArrayList<>();
+    private final List<Integer> zerosBeforeDividend = new ArrayList<>();
+    private final List<Integer> zerosBeforeDivider = new ArrayList<>();
 
-	public static final String DELIMITER = "";
+    public static final String DELIMITER = "";
 
-	public LongDivisionCalculator(int dividend, int divider) {
-		this.dividend = dividend;
-		this.divider = divider;
-	}
+    public LongDivisionCalculator(int dividend, int divider) {
+        this.dividend = dividend;
+        this.divider = divider;
+    }
 
-	public void longDivision(String[] digits) {
-		if (divider == 0) {
-			throw new IllegalArgumentException("На ноль делить нельзя");
-		}
+    public CalculatorDTO longDivision() {
+        CalculatorDTO dto = new CalculatorDTO();
 
-		if (dividend < divider) {
-			return;
-		}
+        if (divider == 0) {
+            throw new IllegalArgumentException("Делить на ноль нельзя");
+        }
 
-		divider = Math.abs(divider);
+        if (dividend < divider) {
+            dto.collectAllData(this);
+            return dto;
+        }
 
-		int dividendTmp = makeFirstDividend(digits);
-		String firtsDividendTmp = String.valueOf(dividendTmp);
+        divider = Math.abs(divider);
 
-		String dividendTmpStr = firtsDividendTmp;
-		String result = "";
+        String[] digits = getDigitsFromDividend();
 
-		int dividendsZeros = -1;
-		int dividersZeros = 0;
+        int dividendTmp = makeFirstDividend(digits);
 
-		int startPoint = firtsDividendTmp.length() - 1;
-		for (int i = startPoint; i < digits.length;) {
-			if (dividendTmp < divider) {
-				dividendTmpStr += digits[i];
-				dividendTmp = Integer.parseInt(dividendTmpStr);
-				if (dividendTmp < divider) {
-					while (dividendTmp < divider) {
-						i++;
-						result += "0";
-						dividendsZeros++;
-						dividersZeros++;
-						dividendTmpStr += digits[i];
-						dividendTmp = Integer.parseInt(dividendTmpStr);
-					}
-				}
-			} else {
-				dividendTmp = Integer.parseInt(dividendTmpStr);
-				result += dividendTmp / divider;
-				remainder = dividendTmp % divider;
+        String fitsDividendTmp = String.valueOf(dividendTmp);
 
-				collectTmpResults(dividendTmp, dividendTmp - remainder);
+        String dividendTmpStr = fitsDividendTmp;
+        StringBuilder result = new StringBuilder();
 
-				dividendsZeros++;
-				dividersZeros++;
-				collectZeros(dividendsZeros, dividersZeros);
+        int dividendsZeros = -1;
+        int dividersZeros = 0;
 
-				dividendTmpStr = String.valueOf(remainder);
-				dividendTmp = Integer.parseInt(dividendTmpStr);
+        int startPoint = fitsDividendTmp.length() - 1;
+        for (int i = startPoint; i < digits.length; ) {
+            if (dividendTmp < divider) {
+                dividendTmpStr += digits[i];
+                dividendTmp = Integer.parseInt(dividendTmpStr);
+                if (dividendTmp < divider) {
+                    while (dividendTmp < divider) {
+                        i++;
+                        result.append("0");
+                        dividendsZeros++;
+                        dividersZeros++;
+                        dividendTmpStr += digits[i];
+                        dividendTmp = Integer.parseInt(dividendTmpStr);
+                    }
+                }
+            } else {
+                dividendTmp = Integer.parseInt(dividendTmpStr);
+                result.append(dividendTmp / divider);
+                remainder = dividendTmp % divider;
 
-				if (dividendTmp == dividendTmp - remainder && i > startPoint) {
-					dividendsZeros++;
-					dividersZeros++;
-				}
-				i++;
-			}
-		}
+                collectTmpResults(dividendTmp, dividendTmp - remainder);
 
-		this.result = Integer.parseInt(result);
-	}
+                dividendsZeros++;
+                dividersZeros++;
+                collectZeros(dividendsZeros, dividersZeros);
 
-	private int makeFirstDividend(String[] digits) {
-		String firstDividend = "0";
-		for (int i = 0; i < digits.length; i++) {
-			if (Integer.parseInt(firstDividend) < divider) {
-				firstDividend += digits[i];
-			}
-		}
-		return Integer.parseInt(firstDividend);
-	}
+                dividendTmpStr = String.valueOf(remainder);
+                dividendTmp = Integer.parseInt(dividendTmpStr);
 
-	public String[] getDigitsFromDividen() {
-		dividend = Math.abs(dividend);
-		String dividendTmp = String.valueOf(dividend);
-		return dividendTmp.split(DELIMITER);
-	}
+                if (dividendTmp == dividendTmp - remainder && i > startPoint) {
+                    dividendsZeros++;
+                    dividersZeros++;
+                }
+                i++;
+            }
+        }
 
-	private void collectZeros(int dividendsZeros, int dividersZeros) {
-		zerosBeforeDividend.add(dividendsZeros);
-		zerosBeforeDivider.add(dividersZeros);
-	}
+        this.result = Integer.parseInt(result.toString());
 
-	private void collectTmpResults(int dividendTMP, int dividerTMP) {
-		dividendsTMP.add(dividendTMP);
-		dividersTMP.add(dividerTMP);
-	}
 
-	public int getDividend() {
-		return dividend;
-	}
+        dto.collectAllData(this);
+        return dto;
+    }
 
-	public int getDivider() {
-		return divider;
-	}
+    private int makeFirstDividend(String[] digits) {
+        String firstDividend = "0";
+        for (String digit : digits) {
+            if (Integer.parseInt(firstDividend) < divider) {
+                firstDividend += digit;
+            }
+        }
+        return Integer.parseInt(firstDividend);
+    }
 
-	public int getResult() {
-		return result;
-	}
+    public String[] getDigitsFromDividend() {
+        dividend = Math.abs(dividend);
+        String dividendTmp = String.valueOf(dividend);
+        return dividendTmp.split(DELIMITER);
+    }
 
-	public int getRemainder() {
-		return remainder;
-	}
+    private void collectZeros(int dividendsZeros, int dividersZeros) {
+        zerosBeforeDividend.add(dividendsZeros);
+        zerosBeforeDivider.add(dividersZeros);
+    }
 
-	public List<Integer> getDividendsTMP() {
-		return dividendsTMP;
-	}
+    private void collectTmpResults(int dividendTMP, int dividerTMP) {
+        dividendsTMP.add(dividendTMP);
+        dividersTMP.add(dividerTMP);
+    }
 
-	public List<Integer> getDividersTMP() {
-		return dividersTMP;
-	}
+    public int getDividend() {
+        return dividend;
+    }
 
-	public List<Integer> getZerosBeforeDividend() {
-		return zerosBeforeDividend;
-	}
+    public int getDivider() {
+        return divider;
+    }
 
-	public List<Integer> getZerosBeforeDivider() {
-		return zerosBeforeDivider;
-	}
+    public int getResult() {
+        return result;
+    }
+
+    public int getRemainder() {
+        return remainder;
+    }
+
+    public List<Integer> getDividendsTMP() {
+        return dividendsTMP;
+    }
+
+    public List<Integer> getDividersTMP() {
+        return dividersTMP;
+    }
+
+    public List<Integer> getZerosBeforeDividend() {
+        return zerosBeforeDividend;
+    }
+
+    public List<Integer> getZerosBeforeDivider() {
+        return zerosBeforeDivider;
+    }
 }

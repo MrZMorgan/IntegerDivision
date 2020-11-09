@@ -3,23 +3,19 @@ package ua.com.foxminded.integerdivision;
 import java.util.Scanner;
 
 public class Solution {
-	public static void main(String[] args) {
-		int dividend = readDigit();
-		int divider = readDigit();
+    public static void main(String[] args) {
+        int dividend = readDigit();
+        int divider = readDigit();
 
-		LongDivisionCalculator calculator = new LongDivisionCalculator(dividend, divider);
-		String[] digits = calculator.getDigitsFromDividen();
-		calculator.longDivision(digits);
+        LongDivisionCalculator calculator = new LongDivisionCalculator(dividend, divider);
+        CalculatorDTO dto = calculator.longDivision();
+        Formatter formatter = new Formatter();
 
-		CalculatorDTO dto = new CalculatorDTO();
-		dto.collectAllData(calculator);
+        System.out.println(formatter.createResult(dto));
+    }
 
-		Formatter formatter = new Formatter(dto);
-		System.out.println(formatter.createResult());
-	}
-
-	public static int readDigit() {
-		Scanner scanner = new Scanner(System.in);
-		return scanner.nextInt();
-	}
+    public static int readDigit() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
 }
