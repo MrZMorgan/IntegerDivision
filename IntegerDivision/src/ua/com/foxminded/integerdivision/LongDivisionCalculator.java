@@ -93,13 +93,13 @@ public class LongDivisionCalculator {
     }
 
     private int makeFirstDividend(String[] digits) {
-        String firstDividend = "0";
+        StringBuilder firstDividend = new StringBuilder("0");
         for (String digit : digits) {
-            if (Integer.parseInt(firstDividend) < divider) {
-                firstDividend += digit;
+            if (Integer.parseInt(firstDividend.toString()) < divider) {
+                firstDividend.append(digit) ;
             }
         }
-        return Integer.parseInt(firstDividend);
+        return Integer.parseInt(firstDividend.toString());
     }
 
     public String[] getDigitsFromDividend() {

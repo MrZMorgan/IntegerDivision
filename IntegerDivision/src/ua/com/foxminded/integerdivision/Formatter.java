@@ -11,10 +11,10 @@ public class Formatter {
     private int spacesAfter = 0;
     private int maxLength;
 
-    private final static String VERTICAL_SEPARATOR = "|";
-    private final static String HORIZONTAL_SEPARATOR = "-";
-    private final static String MINUS = "_";
-    private final static String SPACE = " ";
+    private static final String VERTICAL_SEPARATOR = "|";
+    private static final String HORIZONTAL_SEPARATOR = "-";
+    private static final String MINUS = "_";
+    private static final String SPACE = " ";
 
 
     private void createResultTmp(CalculatorDTO dto) {
