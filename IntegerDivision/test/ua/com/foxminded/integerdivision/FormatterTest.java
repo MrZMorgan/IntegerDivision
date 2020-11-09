@@ -7,13 +7,8 @@ import org.junit.jupiter.api.Test;
 
 class FormatterTest {
 
-	private final static String DIVISION_EXPECTED_RESULT = "_654754|654\n" 
-														 + " 654   -----\n" 
-														 + " ---   |1001\n"
-														 + "   _754\n" 
-														 + "    654\n" 
-														 + "    ---\n" 
-														 + "    100\n";
+	private final static String DIVISION_EXPECTED_RESULT = "_654754|654\n" + " 654   -----\n" + " ---   |1001\n"
+			+ "   _754\n" + "    654\n" + "    ---\n" + "    100\n";
 
 	private final static String ZERO_DIVIDEND_EXPECTED_RESULT = "0 / 123 = 0";
 
