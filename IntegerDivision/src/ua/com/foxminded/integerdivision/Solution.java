@@ -7,8 +7,9 @@ public class Solution {
         int dividend = readDigit();
         int divider = readDigit();
 
-        CalculatorFacade calculator = new CalculatorFacade(dividend, divider);
-        System.out.println(calculator.longDivision());
+        CalculatorFacade calculator = new CalculatorFacade(new LongDivisionCalculator(), new Formatter());
+
+        System.out.println(calculator.divide(dividend, divider));
     }
 
     public static int readDigit() {

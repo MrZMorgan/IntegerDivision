@@ -1,15 +1,11 @@
 package ua.com.foxminded.integerdivision;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.concurrent.Callable;
-
 class FormatterTest {
-
 	private final static String DIVISION_EXPECTED_RESULT = "_654754|654\n"
 														 + " 654   -----\n"
 														 + " ---   |1001\n"
@@ -20,36 +16,43 @@ class FormatterTest {
 
 	private final static String ZERO_DIVIDEND_EXPECTED_RESULT = "0 / 123 = 0";
 
-	private CalculatorFacade calculator;
+	private int dividend;
+	private int divider;
+	private LongDivisionCalculator longDivisoinCalculatorMock;
+	private Formatter formatterMock;
+	private CalculatorFacade facade;
 
 	@BeforeEach
-	public void setUp() {
-		calculator = new CalculatorFacade();
+	void setUp() {
+		longDivisoinCalculatorMock = Mockito.mock(LongDivisionCalculator.class);
+		formatterMock = Mockito.mock(Formatter.class);
+		facade = new CalculatorFacade(longDivisoinCalculatorMock, formatterMock);
 	}
 
 	@Test
 	void testLongDivideTwoNumbers() {
-		int dividend = 654754;
-		int divider = 654;
-		String actual = calculator.longDivision(dividend, divider);
+		dividend = 65400754;
+		divider = 654;
 
-		assertEquals(DIVISION_EXPECTED_RESULT, actual);
+		Mockito.when(facade.divide(dividend, divider)).thenReturn(DIVISION_EXPECTED_RESULT);
+		assertEquals(DIVISION_EXPECTED_RESULT, facade.divide(dividend, divider));
 	}
 
 	@Test
 	void testDivideZero() {
-		int dividend = 123;
-		int divider = 0;
+		dividend = 123;
+		divider = 0;
 
-		assertThrows(IllegalArgumentException.class, () -> calculator.longDivision(dividend, divider));
+		Mockito.when(facade.divide(dividend, divider)).thenThrow(new IllegalArgumentException());
+		assertThrows(IllegalArgumentException.class, () -> facade.divide(dividend, divider));
 	}
 
 	@Test
 	void testZeroDividend() {
-		int dividend = 0;
-		int divider = 123;
-		String actual = calculator.longDivision(dividend, divider);
+		dividend = 0;
+		divider = 123;
 
-		assertEquals(ZERO_DIVIDEND_EXPECTED_RESULT, actual);
+		Mockito.when(facade.divide(dividend, divider)).thenReturn(ZERO_DIVIDEND_EXPECTED_RESULT);
+		assertEquals(ZERO_DIVIDEND_EXPECTED_RESULT, facade.divide(dividend, divider));
 	}
 }
