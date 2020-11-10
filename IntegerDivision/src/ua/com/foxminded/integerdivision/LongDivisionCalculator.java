@@ -93,14 +93,14 @@ public class LongDivisionCalculator {
         return dto;
     }
 
-    private int makeFirstDividend(String[] digits) {
-        StringBuilder firstDividend = new StringBuilder("0");
-        for (String digit : digits) {
-            if (Integer.parseInt(firstDividend.toString()) < divider) {
-                firstDividend.append(digit) ;
+    private int makeFirstDividend(int[] digits) {
+        int firstDividend = 0;
+        for (int digit : digits) {
+            if (firstDividend < divider) {
+                firstDividend = concatTwoDigits(firstDividend, digit) ;
             }
         }
-        return Integer.parseInt(firstDividend.toString());
+        return firstDividend;
     }
     
     private int concatTwoDigits(int digit1, int digit2) {
