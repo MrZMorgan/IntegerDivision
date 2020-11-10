@@ -1,6 +1,8 @@
 package ua.com.foxminded.integerdivision;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LongDivisionCalculator {
@@ -36,8 +38,7 @@ public class LongDivisionCalculator {
 
         divider = Math.abs(divider);
 
-        String[] digits = getDigitsFromDividend();
-
+        int[] digits = getDigitsFromDividend();
         int dividendTmp = makeFirstDividend(digits);
 
         String fitsDividendTmp = String.valueOf(dividendTmp);
@@ -109,10 +110,17 @@ public class LongDivisionCalculator {
 		return result;
 	}
 
-    public String[] getDigitsFromDividend() {
+    public int[] getDigitsFromDividend() {
         dividend = Math.abs(dividend);
         String dividendTmp = String.valueOf(dividend);
-        return dividendTmp.split(DELIMITER);
+        String[] digitsTmp = dividendTmp.split(DELIMITER);
+        int[] digits = new int[dividendTmp.length()];
+        
+        for (int i = 0; i < digitsTmp.length; i++) {
+			digits[i] = Integer.parseInt(digitsTmp[i]);
+		}
+        
+        return digits;
     }
 
     private void collectZeros(int dividendsZeros, int dividersZeros) {
