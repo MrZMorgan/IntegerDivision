@@ -101,6 +101,13 @@ public class LongDivisionCalculator {
         }
         return Integer.parseInt(firstDividend.toString());
     }
+    
+    private int concatTwoDigits(int digit1, int digit2) {
+		int result = 0;
+		result = (int) (digit1 * (Math.pow(10, String.valueOf(digit2).length())) + digit2);
+		
+		return result;
+	}
 
     public String[] getDigitsFromDividend() {
         dividend = Math.abs(dividend);
