@@ -1,8 +1,6 @@
 package ua.com.foxminded.integerdivision;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LongDivisionCalculator {
@@ -19,26 +17,24 @@ public class LongDivisionCalculator {
 
     public static final String DELIMITER = "";
 
-    public LongDivisionCalculator(int dividend, int divider) {
-        this.dividend = dividend;
-        this.divider = divider;
-    }
-
-    public CalculatorDTO longDivision() {
+    public CalculatorDTO longDivision(int dividend, int divider) {
         CalculatorDTO dto = new CalculatorDTO();
 
         if (divider == 0) {
             throw new IllegalArgumentException("Делить на ноль нельзя");
         }
 
+        dividend = Math.abs(dividend);
+        divider = Math.abs(divider);
+        this.dividend = dividend;
+        this.divider = divider;
+
         if (dividend < divider) {
             dto.collectAllData(this);
             return dto;
         }
 
-        divider = Math.abs(divider);
-
-        int[] digits = getDigitsFromDividend();
+        int[] digits = getDigitsFromDividend(dividend);
         int dividendTmp = makeFirstDividend(digits);
 
         int fitsDividendTmp = makeFirstDividend(digits);
@@ -70,7 +66,7 @@ public class LongDivisionCalculator {
 
                 dividendTmp = remainder;
 
-                if (dividendTmp == dividendTmp - remainder && i > startPoint) {
+                if (dividendTmp == 0 && i > startPoint) {
                     dividendsZeros++;
                     dividersZeros++;
                 }
@@ -96,13 +92,13 @@ public class LongDivisionCalculator {
     }
     
     private int concatTwoDigits(int digit1, int digit2) {
-		int result = 0;
+		int result;
 		result = (int) (digit1 * (Math.pow(10, String.valueOf(digit2).length())) + digit2);
 		
 		return result;
 	}
 
-    public int[] getDigitsFromDividend() {
+    public int[] getDigitsFromDividend(int dividend) {
         dividend = Math.abs(dividend);
         String dividendTmp = String.valueOf(dividend);
         String[] digitsTmp = dividendTmp.split(DELIMITER);

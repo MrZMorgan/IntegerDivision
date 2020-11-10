@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Formatter {
-    List<Integer> resultTmp = new ArrayList<>();
-    List<String> formattedResult = new ArrayList<>();
+    private final List<Integer> resultTmp = new ArrayList<>();
+    private final List<String> formattedResult = new ArrayList<>();
 
     private int spacesBefore = 0;
     private int spacesAfter = 0;
@@ -15,7 +15,6 @@ public class Formatter {
     private static final String HORIZONTAL_SEPARATOR = "-";
     private static final String MINUS = "_";
     private static final String SPACE = " ";
-
 
     private void createResultTmp(CalculatorDTO dto) {
         this.maxLength = String.valueOf(dto.getDividend()).length() + 1;
