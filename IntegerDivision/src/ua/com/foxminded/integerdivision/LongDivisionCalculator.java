@@ -41,53 +41,45 @@ public class LongDivisionCalculator {
         int[] digits = getDigitsFromDividend();
         int dividendTmp = makeFirstDividend(digits);
 
-        String fitsDividendTmp = String.valueOf(dividendTmp);
-
-        String dividendTmpStr = fitsDividendTmp;
-        StringBuilder result = new StringBuilder();
+        int fitsDividendTmp = makeFirstDividend(digits);
+        int result = 0;
 
         int dividendsZeros = -1;
         int dividersZeros = 0;
 
-        int startPoint = fitsDividendTmp.length() - 1;
+        int startPoint = String.valueOf(fitsDividendTmp).length() - 1;
         for (int i = startPoint; i < digits.length; ) {
             if (dividendTmp < divider) {
-                dividendTmpStr += digits[i];
-                dividendTmp = Integer.parseInt(dividendTmpStr);
+                dividendTmp = concatTwoDigits(dividendTmp, digits[i]);
                 if (dividendTmp < divider) {
                     while (dividendTmp < divider) {
                         i++;
-                        result.append("0");
+                        result = concatTwoDigits(result, 0);
                         dividendsZeros++;
                         dividersZeros++;
-                        dividendTmpStr += digits[i];
-                        dividendTmp = Integer.parseInt(dividendTmpStr);
+                        dividendTmp = concatTwoDigits(dividendTmp, digits[i]);
                     }
                 }
             } else {
-                dividendTmp = Integer.parseInt(dividendTmpStr);
-                result.append(dividendTmp / divider);
+            	result = concatTwoDigits(result, (dividendTmp / divider));
                 remainder = dividendTmp % divider;
-
                 collectTmpResults(dividendTmp, dividendTmp - remainder);
-
                 dividendsZeros++;
                 dividersZeros++;
                 collectZeros(dividendsZeros, dividersZeros);
 
-                dividendTmpStr = String.valueOf(remainder);
-                dividendTmp = Integer.parseInt(dividendTmpStr);
+                dividendTmp = remainder;
 
                 if (dividendTmp == dividendTmp - remainder && i > startPoint) {
                     dividendsZeros++;
                     dividersZeros++;
                 }
+               
                 i++;
             }
         }
 
-        this.result = Integer.parseInt(result.toString());
-
+        this.result = result;
 
         dto.collectAllData(this);
         return dto;
