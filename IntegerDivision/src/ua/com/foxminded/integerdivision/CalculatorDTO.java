@@ -18,7 +18,7 @@ public class CalculatorDTO {
         return dividend;
     }
 
-    private void setDividend(int dividend) {
+    public void setDividend(int dividend) {
         this.dividend = dividend;
     }
 
@@ -26,7 +26,7 @@ public class CalculatorDTO {
         return divider;
     }
 
-    private void setDivider(int divider) {
+    public void setDivider(int divider) {
         this.divider = divider;
     }
 
@@ -34,7 +34,7 @@ public class CalculatorDTO {
         return dividendsTMP;
     }
 
-    private void setDividendsTMP(List<Integer> dividendsTMP) {
+    public void setDividendsTMP(List<Integer> dividendsTMP) {
         this.dividendsTMP = dividendsTMP;
     }
 
@@ -42,7 +42,7 @@ public class CalculatorDTO {
         return dividersTMP;
     }
 
-    private void setDividersTMP(List<Integer> dividersTMP) {
+    public void setDividersTMP(List<Integer> dividersTMP) {
         this.dividersTMP = dividersTMP;
     }
 
@@ -50,7 +50,7 @@ public class CalculatorDTO {
         return remainder;
     }
 
-    private void setRemainder(int remainder) {
+    public void setRemainder(int remainder) {
         this.remainder = remainder;
     }
 
@@ -58,7 +58,7 @@ public class CalculatorDTO {
         return result;
     }
 
-    private void setResult(int result) {
+    public void setResult(int result) {
         this.result = result;
     }
 
@@ -66,7 +66,7 @@ public class CalculatorDTO {
         return zerosBeforeDividend;
     }
 
-    private void setZerosBeforeDividend(List<Integer> zerosBeforeDividend) {
+    public void setZerosBeforeDividend(List<Integer> zerosBeforeDividend) {
         this.zerosBeforeDividend = zerosBeforeDividend;
     }
 
@@ -74,18 +74,21 @@ public class CalculatorDTO {
         return zerosBeforeDivider;
     }
 
-    private void setZerosBeforeDivider(List<Integer> zerosBeforeDivider) {
+    public void setZerosBeforeDivider(List<Integer> zerosBeforeDivider) {
         this.zerosBeforeDivider = zerosBeforeDivider;
     }
 
-    public void collectAllData(LongDivisionCalculator calculator) {
-        setDividend(calculator.getDividend());
-        setDivider(calculator.getDivider());
-        setDividendsTMP(calculator.getDividendsTMP());
-        setDividersTMP(calculator.getDividersTMP());
-        setRemainder(calculator.getRemainder());
-        setResult(calculator.getResult());
-        setZerosBeforeDividend(calculator.getZerosBeforeDividend());
-        setZerosBeforeDivider(calculator.getZerosBeforeDivider());
+    public void collectAllData(int dividend, int divider, int result, int remainder,
+                               List<Integer> dividendsTMP, List<Integer> dividersTMP,
+                               List<Integer> zerosBeforeDividend, List<Integer> zerosBeforeDivider) {
+
+        setDividend(dividend);
+        setDivider(divider);
+        setResult(result);
+        setRemainder(remainder);
+        setDividendsTMP(dividendsTMP);
+        setDividersTMP(dividersTMP);
+        setZerosBeforeDividend(zerosBeforeDividend);
+        setZerosBeforeDivider(zerosBeforeDivider);
     }
 }

@@ -4,44 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LongDivisionCalculator {
-    private int dividend;
-    private int divider;
-
-    private int remainder;
-    private int result;
-
-    private final List<Integer> dividendsTMP = new ArrayList<>();
-    private final List<Integer> dividersTMP = new ArrayList<>();
-    private final List<Integer> zerosBeforeDividend = new ArrayList<>();
-    private final List<Integer> zerosBeforeDivider = new ArrayList<>();
-
     public static final String DELIMITER = "";
 
     public CalculatorDTO longDivision(int dividend, int divider) {
         CalculatorDTO dto = new CalculatorDTO();
 
         if (divider == 0) {
-            throw new IllegalArgumentException("Делить на ноль нельзя");
+            throw new IllegalArgumentException("Сan`t divide by zero");
         }
 
         dividend = Math.abs(dividend);
         divider = Math.abs(divider);
-        this.dividend = dividend;
-        this.divider = divider;
-
-        if (dividend < divider) {
-            dto.collectAllData(this);
-            return dto;
-        }
 
         int[] digits = getDigitsFromDividend(dividend);
-        int dividendTmp = makeFirstDividend(digits);
+        int dividendTmp = makeFirstDividend(digits, divider);
+        int fitsDividendTmp = makeFirstDividend(digits, divider);
 
-        int fitsDividendTmp = makeFirstDividend(digits);
         int result = 0;
+        int remainder = 0;
 
         int dividendsZeros = -1;
         int dividersZeros = 0;
+
+        List<Integer> dividendsTMP = new ArrayList<>();
+        List<Integer> dividersTMP = new ArrayList<>();
+
+        List<Integer> zerosBeforeDividend = new ArrayList<>();
+        List<Integer> zerosBeforeDivider = new ArrayList<>();
+
+        if (dividend < divider) {
+            dto.collectAllData(dividend, divider, result, remainder,
+                    dividendsTMP, dividersTMP, zerosBeforeDividend, zerosBeforeDivider);
+            return dto;
+        }
 
         int startPoint = String.valueOf(fitsDividendTmp).length() - 1;
         for (int i = startPoint; i < digits.length; ) {
@@ -59,10 +54,10 @@ public class LongDivisionCalculator {
             } else {
             	result = concatTwoDigits(result, (dividendTmp / divider));
                 remainder = dividendTmp % divider;
-                collectTmpResults(dividendTmp, dividendTmp - remainder);
+                collectTmpResults(dividendTmp, dividendTmp - remainder, dividendsTMP, dividersTMP);
                 dividendsZeros++;
                 dividersZeros++;
-                collectZeros(dividendsZeros, dividersZeros);
+                collectZeros(dividendsZeros, dividersZeros, zerosBeforeDividend, zerosBeforeDivider);
 
                 dividendTmp = remainder;
 
@@ -75,13 +70,13 @@ public class LongDivisionCalculator {
             }
         }
 
-        this.result = result;
+        dto.collectAllData(dividend, divider, result, remainder,
+                dividendsTMP, dividersTMP, zerosBeforeDividend, zerosBeforeDivider);
 
-        dto.collectAllData(this);
         return dto;
     }
 
-    private int makeFirstDividend(int[] digits) {
+    private int makeFirstDividend(int[] digits, int divider) {
         int firstDividend = 0;
         for (int digit : digits) {
             if (firstDividend < divider) {
@@ -111,45 +106,13 @@ public class LongDivisionCalculator {
         return digits;
     }
 
-    private void collectZeros(int dividendsZeros, int dividersZeros) {
+    private void collectZeros(int dividendsZeros, int dividersZeros, List<Integer> zerosBeforeDividend, List<Integer> zerosBeforeDivider) {
         zerosBeforeDividend.add(dividendsZeros);
         zerosBeforeDivider.add(dividersZeros);
     }
 
-    private void collectTmpResults(int dividendTMP, int dividerTMP) {
+    private void collectTmpResults(int dividendTMP, int dividerTMP, List<Integer> dividendsTMP, List<Integer> dividersTMP) {
         dividendsTMP.add(dividendTMP);
         dividersTMP.add(dividerTMP);
-    }
-
-    public int getDividend() {
-        return dividend;
-    }
-
-    public int getDivider() {
-        return divider;
-    }
-
-    public int getResult() {
-        return result;
-    }
-
-    public int getRemainder() {
-        return remainder;
-    }
-
-    public List<Integer> getDividendsTMP() {
-        return dividendsTMP;
-    }
-
-    public List<Integer> getDividersTMP() {
-        return dividersTMP;
-    }
-
-    public List<Integer> getZerosBeforeDividend() {
-        return zerosBeforeDividend;
-    }
-
-    public List<Integer> getZerosBeforeDivider() {
-        return zerosBeforeDivider;
     }
 }
