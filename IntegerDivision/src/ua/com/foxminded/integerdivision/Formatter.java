@@ -16,17 +16,17 @@ public class Formatter {
     private static final String MINUS = "_";
     private static final String SPACE = " ";
 
-    private void createResultTmp(CalculatorDTO dto) {
+    private void createResultTmp(CalculationDto dto) {
         this.maxLength = String.valueOf(dto.getDividend()).length() + 1;
-        int numberOfStrings = dto.getDividendsTMP().size();
+        int numberOfStrings = dto.getIntermediateDividends().size();
 
         for (int i = 0; i < numberOfStrings; i++) {
-            resultTmp.add(dto.getDividendsTMP().get(i));
-            resultTmp.add(dto.getDividersTMP().get(i));
+            resultTmp.add(dto.getIntermediateDividends().get(i));
+            resultTmp.add(dto.getIntermediateDividers().get(i));
         }
     }
 
-    private void formatResult(CalculatorDTO dto) {
+    private void formatResult(CalculationDto dto) {
         for (int i = 0; i < resultTmp.size(); i++) {
             if (i % 2 == 0) {
                 addDividendLine(i, dto);
@@ -41,9 +41,9 @@ public class Formatter {
         formatThirdLine(dto);
     }
 
-    private void addDividendLine(int i, CalculatorDTO dto) {
+    private void addDividendLine(int i, CalculationDto dto) {
         StringBuilder line = new StringBuilder();
-        spacesBefore = dto.getZerosBeforeDividend().get(i / 2);
+        spacesBefore = dto.getZerosBeforeDividends().get(i / 2);
 
         addSpacesBefore(line, spacesBefore);
         line.append(MINUS);
@@ -55,9 +55,9 @@ public class Formatter {
         formattedResult.add(line.toString());
     }
 
-    private void addDividerLine(int i, CalculatorDTO dto) {
+    private void addDividerLine(int i, CalculationDto dto) {
         StringBuilder line = new StringBuilder();
-        spacesBefore = dto.getZerosBeforeDivider().get(i / 2);
+        spacesBefore = dto.getZerosBeforeDividers().get(i / 2);
 
         addSpacesBefore(line, spacesBefore);
         line.append(resultTmp.get(i));
@@ -82,7 +82,7 @@ public class Formatter {
         formattedResult.add(separator.toString());
     }
 
-    private void addResultValueOfLongDivision(CalculatorDTO dto) {
+    private void addResultValueOfLongDivision(CalculationDto dto) {
         StringBuilder lastLineOfResult = new StringBuilder();
         int remainderLength = String.valueOf(dto.getRemainder()).length();
         int spacesBefore = maxLength - remainderLength;
@@ -95,12 +95,12 @@ public class Formatter {
         formattedResult.add(lastLineOfResult.toString());
     }
 
-    private void formatFirstLine(CalculatorDTO dto) {
+    private void formatFirstLine(CalculationDto dto) {
         String line = MINUS + dto.getDividend() + VERTICAL_SEPARATOR + dto.getDivider();
         formattedResult.set(0, line);
     }
 
-    private void formatSecondLine(CalculatorDTO dto) {
+    private void formatSecondLine(CalculationDto dto) {
         StringBuilder line = new StringBuilder(formattedResult.get(1));
         int resultOfLongDivisionLength = String.valueOf(dto.getResult()).length();
         for (int i = 0; i < resultOfLongDivisionLength + 1; i++) {
@@ -109,7 +109,7 @@ public class Formatter {
         formattedResult.set(1, line.toString());
     }
 
-    private void formatThirdLine(CalculatorDTO dto) {
+    private void formatThirdLine(CalculationDto dto) {
         StringBuilder line = new StringBuilder(formattedResult.get(2));
         int spacesAfter = maxLength - line.toString().length();
         for (int i = 0; i < spacesAfter; i++) {
@@ -132,7 +132,7 @@ public class Formatter {
         }
     }
 
-    public String createResult(CalculatorDTO dto) {
+    public String createResult(CalculationDto dto) {
         StringBuilder result = new StringBuilder();
 
         if (dto.getDividend() < dto.getDivider()) {

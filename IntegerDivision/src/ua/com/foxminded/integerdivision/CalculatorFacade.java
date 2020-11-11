@@ -2,7 +2,7 @@ package ua.com.foxminded.integerdivision;
 
 public class CalculatorFacade {
     LongDivisionCalculator calculator;
-    CalculatorDTO dto;
+    CalculationDto dto;
     Formatter formatter;
 
     public CalculatorFacade(LongDivisionCalculator calculator, Formatter formatter) {

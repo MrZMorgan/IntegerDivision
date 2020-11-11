@@ -6,8 +6,8 @@ import java.util.List;
 public class LongDivisionCalculator {
     public static final String DELIMITER = "";
 
-    public CalculatorDTO longDivision(int dividend, int divider) {
-        CalculatorDTO dto = new CalculatorDTO();
+    public CalculationDto longDivision(int dividend, int divider) {
+        CalculationDto dto = new CalculationDto();
 
         if (divider == 0) {
             throw new IllegalArgumentException("Ñan`t divide by zero");
@@ -17,8 +17,8 @@ public class LongDivisionCalculator {
         divider = Math.abs(divider);
 
         int[] digits = getDigitsFromDividend(dividend);
-        int dividendTmp = makeFirstDividend(digits, divider);
-        int fitsDividendTmp = makeFirstDividend(digits, divider);
+        int intermediateDividend = makeFirstDividend(digits, divider);
+        int fitsIntermediateDividend = makeFirstDividend(digits, divider);
 
         int result = 0;
         int remainder = 0;
@@ -26,42 +26,42 @@ public class LongDivisionCalculator {
         int dividendsZeros = -1;
         int dividersZeros = 0;
 
-        List<Integer> dividendsTMP = new ArrayList<>();
-        List<Integer> dividersTMP = new ArrayList<>();
+        List<Integer> intermediateDividends = new ArrayList<>();
+        List<Integer> intermediateDividers = new ArrayList<>();
 
         List<Integer> zerosBeforeDividend = new ArrayList<>();
         List<Integer> zerosBeforeDivider = new ArrayList<>();
 
         if (dividend < divider) {
             dto.collectAllData(dividend, divider, result, remainder,
-                    dividendsTMP, dividersTMP, zerosBeforeDividend, zerosBeforeDivider);
+                    intermediateDividends, intermediateDividers, zerosBeforeDividend, zerosBeforeDivider);
             return dto;
         }
 
-        int startPoint = String.valueOf(fitsDividendTmp).length() - 1;
+        int startPoint = String.valueOf(fitsIntermediateDividend).length() - 1;
         for (int i = startPoint; i < digits.length; ) {
-            if (dividendTmp < divider) {
-                dividendTmp = concatTwoDigits(dividendTmp, digits[i]);
-                if (dividendTmp < divider) {
-                    while (dividendTmp < divider) {
+            if (intermediateDividend < divider) {
+                intermediateDividend = concatTwoDigits(intermediateDividend, digits[i]);
+                if (intermediateDividend < divider) {
+                    while (intermediateDividend < divider) {
                         i++;
                         result = concatTwoDigits(result, 0);
                         dividendsZeros++;
                         dividersZeros++;
-                        dividendTmp = concatTwoDigits(dividendTmp, digits[i]);
+                        intermediateDividend = concatTwoDigits(intermediateDividend, digits[i]);
                     }
                 }
             } else {
-            	result = concatTwoDigits(result, (dividendTmp / divider));
-                remainder = dividendTmp % divider;
-                collectTmpResults(dividendTmp, dividendTmp - remainder, dividendsTMP, dividersTMP);
+            	result = concatTwoDigits(result, (intermediateDividend / divider));
+                remainder = intermediateDividend % divider;
+                collectTmpResults(intermediateDividend, intermediateDividend - remainder, intermediateDividends, intermediateDividers);
                 dividendsZeros++;
                 dividersZeros++;
                 collectZeros(dividendsZeros, dividersZeros, zerosBeforeDividend, zerosBeforeDivider);
 
-                dividendTmp = remainder;
+                intermediateDividend = remainder;
 
-                if (dividendTmp == 0 && i > startPoint) {
+                if (intermediateDividend == 0 && i > startPoint) {
                     dividendsZeros++;
                     dividersZeros++;
                 }
@@ -71,7 +71,7 @@ public class LongDivisionCalculator {
         }
 
         dto.collectAllData(dividend, divider, result, remainder,
-                dividendsTMP, dividersTMP, zerosBeforeDividend, zerosBeforeDivider);
+                intermediateDividends, intermediateDividers, zerosBeforeDividend, zerosBeforeDivider);
 
         return dto;
     }
@@ -106,13 +106,15 @@ public class LongDivisionCalculator {
         return digits;
     }
 
-    private void collectZeros(int dividendsZeros, int dividersZeros, List<Integer> zerosBeforeDividend, List<Integer> zerosBeforeDivider) {
+    private void collectZeros(int dividendsZeros, int dividersZeros,
+                              List<Integer> zerosBeforeDividend, List<Integer> zerosBeforeDivider) {
         zerosBeforeDividend.add(dividendsZeros);
         zerosBeforeDivider.add(dividersZeros);
     }
 
-    private void collectTmpResults(int dividendTMP, int dividerTMP, List<Integer> dividendsTMP, List<Integer> dividersTMP) {
-        dividendsTMP.add(dividendTMP);
-        dividersTMP.add(dividerTMP);
+    private void collectTmpResults(int intermediateDividend, int intermediateDivider,
+                                   List<Integer> intermediateDividends, List<Integer> intermediateDividers) {
+        intermediateDividends.add(intermediateDividend);
+        intermediateDividers.add(intermediateDivider);
     }
 }
