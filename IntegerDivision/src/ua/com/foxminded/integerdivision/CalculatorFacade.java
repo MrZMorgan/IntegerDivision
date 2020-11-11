@@ -1,9 +1,8 @@
 package ua.com.foxminded.integerdivision;
 
 public class CalculatorFacade {
-    LongDivisionCalculator calculator;
-    CalculationDto dto;
-    Formatter formatter;
+    private final LongDivisionCalculator calculator;
+    private final Formatter formatter;
 
     public CalculatorFacade(LongDivisionCalculator calculator, Formatter formatter) {
         this.calculator = calculator;
@@ -11,7 +10,7 @@ public class CalculatorFacade {
     }
 
     public String divide(int dividend, int divider) {
-        dto = calculator.longDivision(dividend, divider);
+        CalculationDto dto = calculator.longDivision(dividend, divider);
         return formatter.createResult(dto);
     }
 }
