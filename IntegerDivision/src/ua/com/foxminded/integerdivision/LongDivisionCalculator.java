@@ -7,12 +7,6 @@ public class LongDivisionCalculator {
     public static final String DELIMITER = "";
 
     public CalculationDto longDivision(int dividend, int divider) {
-        CalculationDto dto = new CalculationDto();
-
-        if (divider == 0) {
-            throw new IllegalArgumentException("Ñan`t divide by zero");
-        }
-
         dividend = Math.abs(dividend);
         divider = Math.abs(divider);
 
@@ -23,6 +17,10 @@ public class LongDivisionCalculator {
         int result = 0;
         int remainder = 0;
 
+        if (divider == 0) {
+            throw new IllegalArgumentException("Ñan`t divide by zero");
+        }
+
         int dividendsZeros = -1;
         int dividersZeros = 0;
 
@@ -32,10 +30,10 @@ public class LongDivisionCalculator {
         List<Integer> zerosBeforeDividend = new ArrayList<>();
         List<Integer> zerosBeforeDivider = new ArrayList<>();
 
+        CalculationDto intermediateDto = new CalculationDto(dividend, divider, remainder, result);
+
         if (dividend < divider) {
-            dto.collectAllData(dividend, divider, result, remainder,
-                    intermediateDividends, intermediateDividers, zerosBeforeDividend, zerosBeforeDivider);
-            return dto;
+            return intermediateDto;
         }
 
         int startPoint = String.valueOf(fitsIntermediateDividend).length() - 1;
@@ -70,8 +68,12 @@ public class LongDivisionCalculator {
             }
         }
 
-        dto.collectAllData(dividend, divider, result, remainder,
-                intermediateDividends, intermediateDividers, zerosBeforeDividend, zerosBeforeDivider);
+        CalculationDto dto = new CalculationDto(dividend, divider, remainder, result);
+
+        dto.setIntermediateDividends(intermediateDividends);
+        dto.setIntermediateDividers(intermediateDividers);
+        dto.setZerosBeforeDividends(zerosBeforeDividend);
+        dto.setZerosBeforeDividers(zerosBeforeDivider);
 
         return dto;
     }

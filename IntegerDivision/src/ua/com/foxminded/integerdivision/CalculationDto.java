@@ -4,30 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalculationDto {
-    private int dividend;
-    private int divider;
-    private int remainder;
-    private int result;
+    private final int dividend;
+    private final int divider;
+    private final int remainder;
+    private final int result;
 
     private List<Integer> intermediateDividends = new ArrayList<>();
     private List<Integer> intermediateDividers = new ArrayList<>();
     private List<Integer> zerosBeforeDividends = new ArrayList<>();
     private List<Integer> zerosBeforeDividers = new ArrayList<>();
 
-    public int getDividend() {
-        return dividend;
+    public CalculationDto(int dividend, int divider, int remainder, int result) {
+        this.dividend = dividend;
+        this.divider = divider;
+        this.remainder = remainder;
+        this.result = result;
     }
 
-    public void setDividend(int dividend) {
-        this.dividend = dividend;
+    public int getDividend() {
+        return dividend;
     }
 
     public int getDivider() {
         return divider;
     }
 
-    public void setDivider(int divider) {
-        this.divider = divider;
+    public int getRemainder() {
+        return remainder;
+    }
+
+    public int getResult() {
+        return result;
     }
 
     public List<Integer> getIntermediateDividends() {
@@ -46,22 +53,6 @@ public class CalculationDto {
         this.intermediateDividers = intermediateDividers;
     }
 
-    public int getRemainder() {
-        return remainder;
-    }
-
-    public void setRemainder(int remainder) {
-        this.remainder = remainder;
-    }
-
-    public int getResult() {
-        return result;
-    }
-
-    public void setResult(int result) {
-        this.result = result;
-    }
-
     public List<Integer> getZerosBeforeDividends() { return zerosBeforeDividends; }
 
     public void setZerosBeforeDividends(List<Integer> zerosBeforeDividends) {
@@ -73,19 +64,5 @@ public class CalculationDto {
 
     public void setZerosBeforeDividers(List<Integer> zerosBeforeDividers) {
         this.zerosBeforeDividers = zerosBeforeDividers;
-    }
-
-    public void collectAllData(int dividend, int divider, int result, int remainder,
-                               List<Integer> intermediateDividends, List<Integer> intermediateDividers,
-                               List<Integer> zerosBeforeDividend, List<Integer> zerosBeforeDivider) {
-
-        setDividend(dividend);
-        setDivider(divider);
-        setResult(result);
-        setRemainder(remainder);
-        setIntermediateDividends(intermediateDividends);
-        setIntermediateDividers(intermediateDividers);
-        setZerosBeforeDividends(zerosBeforeDividend);
-        setZerosBeforeDividers(zerosBeforeDivider);
     }
 }
