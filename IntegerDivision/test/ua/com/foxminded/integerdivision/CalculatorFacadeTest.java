@@ -13,6 +13,7 @@ class CalculatorFacadeTest {
 	private CalculatorFacade facade;
 	private int dividend;
 	private int divider;
+	private String actual;
 
 	private static final String DIVISION_EXPECTED_RESULT = "_654754|654\n"
 			+ " 654   -----\n"
@@ -39,9 +40,9 @@ class CalculatorFacadeTest {
 		when(facade.divide(anyInt(), anyInt()))
 				.thenReturn(DIVISION_EXPECTED_RESULT);
 
-		String ACTUAL_RESULT = facade.divide(dividend, divider);
+		actual = facade.divide(dividend, divider);
 
-		assertEquals(DIVISION_EXPECTED_RESULT, ACTUAL_RESULT);
+		assertEquals(DIVISION_EXPECTED_RESULT, actual);
 	}
 
 	@Test
@@ -52,9 +53,9 @@ class CalculatorFacadeTest {
 		when(facade.divide(anyInt(), anyInt()))
 				.thenReturn(ZERO_DIVIDEND_EXPECTED_RESULT);
 
-		String ACTUAL_RESULT = facade.divide(dividend, divider);
+		actual = facade.divide(dividend, divider);
 
-		assertEquals(ZERO_DIVIDEND_EXPECTED_RESULT, ACTUAL_RESULT);
+		assertEquals(ZERO_DIVIDEND_EXPECTED_RESULT, actual);
 	}
 
 	@Test
