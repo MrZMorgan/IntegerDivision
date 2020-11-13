@@ -2,48 +2,61 @@ package ua.com.foxminded.integerdivision;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.xml.stream.events.DTD;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CalculatorFacadeTest {
-	private static final String DIVISION_EXPECTED_RESULT = "_654754|654\n"
-			+ " 654   -----\n"
-			+ " ---   |1001\n"
-			+ "   _754\n"
-			+ "    654\n"
-			+ "    ---\n"
-			+ "    100\n";
-
-	private final static String ZERO_DIVIDEND_EXPECTED_RESULT = "0 / 123 = 0";
-
-	int dividend;
-	int divider;
+	private int dividend;
+	private int divider;
+	private LongDivisionCalculator calculator;
+	private Formatter formatterMock;
+	private CalculatorFacade facade;
+	private String result;
 
 	@BeforeEach
 	void setUp() {
-
+		calculator = new LongDivisionCalculator();
+		formatterMock = Mockito.mock(Formatter.class);
+		facade = new CalculatorFacade(calculator, formatterMock);
 	}
 
 	@Test
-	void divideTwoNumbers() {
-		dividend = 14587;
-		divider = 6;
+	void divideTwoNumbersShouldEqualsDto() {
+		dividend = 654754;
+		divider = 654;
 
-		LongDivisionCalculator calculator = new LongDivisionCalculator();
-		Formatter formatterMock = Mockito.mock(Formatter.class);
-
-		new CalculatorFacade(calculator, formatterMock).divide(dividend, divider);
+		result = facade.divide(dividend, divider);
 
 		ArgumentCaptor<CalculationDto> captor = ArgumentCaptor.forClass(CalculationDto.class);
 		verify(formatterMock).createResult(captor.capture());
 
-		CalculationDto dto = captor.getValue();
-		assertEquals(calculator.longDivision(dividend, divider), dto);
+		CalculationDto capturedDto = captor.getValue();
+		CalculationDto actualDto = calculator.longDivision(dividend, divider);
+
+		assertEquals(actualDto, capturedDto);
+	}
+
+	@Test void zeroDividendShouldEqualsDto() {
+		dividend = 0;
+		divider = 123;
+
+		result = facade.divide(dividend, divider);
+
+		ArgumentCaptor<CalculationDto> captor = ArgumentCaptor.forClass(CalculationDto.class);
+		verify(formatterMock).createResult(captor.capture());
+
+		CalculationDto capturedDto = captor.getValue();
+		CalculationDto actualDto = calculator.longDivision(dividend, divider);
+
+		assertEquals(actualDto, capturedDto);
+	}
+
+	@Test void zeroDivider() {
+		dividend = 123;
+		divider = 0;
+
+		assertThrows(IllegalArgumentException.class, () -> facade.divide(dividend, divider));
 	}
 }
