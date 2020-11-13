@@ -2,19 +2,16 @@ package ua.com.foxminded.integerdivision;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.when;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.xml.stream.events.DTD;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class CalculatorFacadeTest {
-	private LongDivisionCalculator calculatorMock;
-	private Formatter formatterMock;
-	private CalculatorFacade facade;
-	private int dividend;
-	private int divider;
-	private String actual;
-
 	private static final String DIVISION_EXPECTED_RESULT = "_654754|654\n"
 			+ " 654   -----\n"
 			+ " ---   |1001\n"
@@ -25,47 +22,28 @@ class CalculatorFacadeTest {
 
 	private final static String ZERO_DIVIDEND_EXPECTED_RESULT = "0 / 123 = 0";
 
+	int dividend;
+	int divider;
+
 	@BeforeEach
 	void setUp() {
-		calculatorMock = Mockito.mock(LongDivisionCalculator.class);
-		formatterMock = Mockito.mock(Formatter.class);
-		facade = new CalculatorFacade(calculatorMock, formatterMock);
+
 	}
 
 	@Test
 	void divideTwoNumbers() {
-		dividend = 654754;
-		divider = 654;
+		dividend = 14587;
+		divider = 6;
 
-		when(facade.divide(anyInt(), anyInt()))
-				.thenReturn(DIVISION_EXPECTED_RESULT);
+		LongDivisionCalculator calculator = new LongDivisionCalculator();
+		Formatter formatterMock = Mockito.mock(Formatter.class);
 
-		actual = facade.divide(dividend, divider);
+		new CalculatorFacade(calculator, formatterMock).divide(dividend, divider);
 
-		assertEquals(DIVISION_EXPECTED_RESULT, actual);
-	}
+		ArgumentCaptor<CalculationDto> captor = ArgumentCaptor.forClass(CalculationDto.class);
+		verify(formatterMock).createResult(captor.capture());
 
-	@Test
-	void zeroDividend() {
-		dividend = 0;
-		divider = 123;
-
-		when(facade.divide(anyInt(), anyInt()))
-				.thenReturn(ZERO_DIVIDEND_EXPECTED_RESULT);
-
-		actual = facade.divide(dividend, divider);
-
-		assertEquals(ZERO_DIVIDEND_EXPECTED_RESULT, actual);
-	}
-
-	@Test
-	void divideByZero() {
-		dividend = 123;
-		divider = 0;
-
-		when(facade.divide(anyInt(), anyInt()))
-				.thenThrow(new IllegalArgumentException());
-
-		assertThrows(IllegalArgumentException.class, () -> facade.divide(dividend, divider));
+		CalculationDto dto = captor.getValue();
+		assertEquals(calculator.longDivision(dividend, divider), dto);
 	}
 }
