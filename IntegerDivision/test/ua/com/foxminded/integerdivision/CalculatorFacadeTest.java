@@ -27,7 +27,7 @@ class CalculatorFacadeTest {
 		dividend = 654754;
 		divider = 654;
 
-		result = facade.divide(dividend, divider);
+		facade.divide(dividend, divider);
 
 		ArgumentCaptor<CalculationDto> captor = ArgumentCaptor.forClass(CalculationDto.class);
 		verify(formatterMock).createResult(captor.capture());
@@ -51,12 +51,24 @@ class CalculatorFacadeTest {
 		CalculationDto actualDto = calculator.longDivision(dividend, divider);
 
 		assertEquals(actualDto, capturedDto);
+
 	}
 
 	@Test void zeroDivider() {
 		dividend = 123;
 		divider = 0;
+		String expectedErrorMessage = "Can`t divide by zero";
 
 		assertThrows(IllegalArgumentException.class, () -> facade.divide(dividend, divider));
+
+		String actualErrorMessage = "";
+
+		try {
+			result = facade.divide(dividend, divider);
+		} catch (IllegalArgumentException e) {
+			actualErrorMessage = e.getMessage();
+		}
+
+		assertEquals(expectedErrorMessage, actualErrorMessage);
 	}
 }

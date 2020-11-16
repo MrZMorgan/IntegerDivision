@@ -18,7 +18,7 @@ public class LongDivisionCalculator {
         int remainder = 0;
 
         if (divider == 0) {
-            throw new IllegalArgumentException("Ñan`t divide by zero"); 
+            throw new IllegalArgumentException("Can`t divide by zero");
         }
 
         int dividendsZeros = -1;
