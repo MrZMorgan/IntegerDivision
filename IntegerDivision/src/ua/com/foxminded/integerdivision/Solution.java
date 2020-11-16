@@ -1,5 +1,8 @@
 package ua.com.foxminded.integerdivision;
 
+import ua.com.foxminded.integerdivision.calculator.*;
+import ua.com.foxminded.integerdivision.facede.*;
+
 import java.util.Scanner;
 
 public class Solution {

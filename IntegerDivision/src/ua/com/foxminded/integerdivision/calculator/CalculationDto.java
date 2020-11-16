@@ -1,4 +1,4 @@
-package ua.com.foxminded.integerdivision;
+package ua.com.foxminded.integerdivision.calculator;
 
 import java.util.ArrayList;
 import java.util.List;

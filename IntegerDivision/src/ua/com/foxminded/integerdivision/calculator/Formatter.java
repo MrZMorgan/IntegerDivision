@@ -1,4 +1,4 @@
-package ua.com.foxminded.integerdivision;
+package ua.com.foxminded.integerdivision.calculator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,6 +133,11 @@ public class Formatter {
     }
 
     public String createResult(CalculationDto dto) {
+
+        if (dto == null) {
+            throw new NullPointerException("DTO object cannot be \"null\"");
+        }
+
         StringBuilder result = new StringBuilder();
 
         if (dto.getDividend() < dto.getDivider()) {

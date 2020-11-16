@@ -1,4 +1,8 @@
-package ua.com.foxminded.integerdivision;
+package ua.com.foxminded.integerdivision.facede;
+
+import ua.com.foxminded.integerdivision.calculator.CalculationDto;
+import ua.com.foxminded.integerdivision.calculator.Formatter;
+import ua.com.foxminded.integerdivision.calculator.LongDivisionCalculator;
 
 public class CalculatorFacade {
     private final LongDivisionCalculator calculator;

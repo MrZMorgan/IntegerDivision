@@ -3,15 +3,19 @@ package ua.com.foxminded.integerdivision;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import ua.com.foxminded.integerdivision.calculator.*;
+import ua.com.foxminded.integerdivision.facede.*;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CalculatorFacadeTest {
+class CalculatorTest {
 	private int dividend;
 	private int divider;
 	private LongDivisionCalculator calculator;
 	private Formatter formatterMock;
+	private Formatter formatter;
 	private CalculatorFacade facade;
 	private String result;
 
@@ -38,7 +42,8 @@ class CalculatorFacadeTest {
 		assertEquals(actualDto, capturedDto);
 	}
 
-	@Test void zeroDividendShouldEqualsDto() {
+	@Test
+	void zeroDividendShouldEqualsDto() {
 		dividend = 0;
 		divider = 123;
 
@@ -51,10 +56,29 @@ class CalculatorFacadeTest {
 		CalculationDto actualDto = calculator.longDivision(dividend, divider);
 
 		assertEquals(actualDto, capturedDto);
-
 	}
 
-	@Test void zeroDivider() {
+
+
+	@Test
+	void nullCalculationDtoShouldThrowNullPointerException() {
+		String expectedErrorMessage = "DTO object cannot be \"null\"";
+		formatter = new Formatter();
+
+		assertThrows(NullPointerException.class, () -> formatter.createResult(null));
+
+		String actualErrorMessage = "";
+		try {
+			formatter.createResult(null);
+		} catch (NullPointerException e) {
+			actualErrorMessage = e.getMessage();
+		}
+
+		assertEquals(expectedErrorMessage, actualErrorMessage);
+	}
+
+	@Test
+	void zeroDividerShouldThrowIllegalArgumentException() {
 		dividend = 123;
 		divider = 0;
 		String expectedErrorMessage = "Can`t divide by zero";
@@ -62,7 +86,6 @@ class CalculatorFacadeTest {
 		assertThrows(IllegalArgumentException.class, () -> facade.divide(dividend, divider));
 
 		String actualErrorMessage = "";
-
 		try {
 			result = facade.divide(dividend, divider);
 		} catch (IllegalArgumentException e) {
