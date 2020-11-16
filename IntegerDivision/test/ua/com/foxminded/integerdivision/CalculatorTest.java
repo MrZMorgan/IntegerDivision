@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import ua.com.foxminded.integerdivision.calculator.*;
-import ua.com.foxminded.integerdivision.facede.*;
+import ua.com.foxminded.integerdivision.facade.*;
+import ua.com.foxminded.integerdivision.formatter.Formatter;
+import ua.com.foxminded.integerdivision.interfaces.Formatable;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +16,8 @@ class CalculatorTest {
 	private int dividend;
 	private int divider;
 	private LongDivisionCalculator calculator;
-	private Formatter formatterMock;
-	private Formatter formatter;
+	private Formatable formatterMock;
+	private Formatable formatter;
 	private CalculatorFacade facade;
 	private String result;
 
@@ -62,7 +64,7 @@ class CalculatorTest {
 
 	@Test
 	void nullCalculationDtoShouldThrowNullPointerException() {
-		String expectedErrorMessage = "DTO object cannot be \"null\"";
+		String expectedErrorMessage = "DTO cannot be \"null\"";
 		formatter = new Formatter();
 
 		assertThrows(NullPointerException.class, () -> formatter.createResult(null));
@@ -76,6 +78,27 @@ class CalculatorTest {
 
 		assertEquals(expectedErrorMessage, actualErrorMessage);
 	}
+
+	@Test
+	void emptyCalculationDtoShouldThrowNullPointerException() {
+		String expectedErrorMessage = "DTO cannot be empty";
+		formatter = new Formatter();
+
+		CalculationDto emptyDto = new CalculationDto(0, 0, 0, 0);
+
+		assertThrows(NullPointerException.class,
+				() -> formatter.createResult(emptyDto));
+
+		String actualErrorMessage = "";
+		try {
+			formatter.createResult(null);
+		} catch (NullPointerException e) {
+			actualErrorMessage = e.getMessage();
+		}
+
+		assertEquals(expectedErrorMessage, actualErrorMessage);
+	}
+
 
 	@Test
 	void zeroDividerShouldThrowIllegalArgumentException() {

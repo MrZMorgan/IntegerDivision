@@ -19,7 +19,7 @@ public class Formatter implements Formatable {
     private static final String MINUS = "_";
     private static final String SPACE = " ";
 
-    public void createResultTmp(CalculationDto dto) {
+    private void createResultTmp(CalculationDto dto) {
         this.maxLength = String.valueOf(dto.getDividend()).length() + 1;
         int numberOfStrings = dto.getIntermediateDividends().size();
 
@@ -29,7 +29,7 @@ public class Formatter implements Formatable {
         }
     }
 
-    public void formatResult(CalculationDto dto) {
+    private void formatResult(CalculationDto dto) {
         for (int i = 0; i < resultTmp.size(); i++) {
             if (i % 2 == 0) {
                 addDividendLine(i, dto);
@@ -44,7 +44,7 @@ public class Formatter implements Formatable {
         formatThirdLine(dto);
     }
 
-    public void addDividendLine(int i, CalculationDto dto) {
+    private void addDividendLine(int i, CalculationDto dto) {
         StringBuilder line = new StringBuilder();
         spacesBefore = dto.getZerosBeforeDividends().get(i / 2);
 
@@ -58,7 +58,7 @@ public class Formatter implements Formatable {
         formattedResult.add(line.toString());
     }
 
-    public void addDividerLine(int i, CalculationDto dto) {
+    private void addDividerLine(int i, CalculationDto dto) {
         StringBuilder line = new StringBuilder();
         spacesBefore = dto.getZerosBeforeDividers().get(i / 2);
 
@@ -71,7 +71,7 @@ public class Formatter implements Formatable {
         formattedResult.add(line.toString());
     }
 
-    public void addSeparator(int separatorLength, int spacesBefore) {
+    private void addSeparator(int separatorLength, int spacesBefore) {
         StringBuilder separator = new StringBuilder();
 
         for (int i = 0; i < spacesBefore; i++) {
@@ -85,7 +85,7 @@ public class Formatter implements Formatable {
         formattedResult.add(separator.toString());
     }
 
-    public void addResultValueOfLongDivision(CalculationDto dto) {
+    private void addResultValueOfLongDivision(CalculationDto dto) {
         StringBuilder lastLineOfResult = new StringBuilder();
         int remainderLength = String.valueOf(dto.getRemainder()).length();
         int spacesBefore = maxLength - remainderLength;
@@ -98,12 +98,12 @@ public class Formatter implements Formatable {
         formattedResult.add(lastLineOfResult.toString());
     }
 
-    public void formatFirstLine(CalculationDto dto) {
+    private void formatFirstLine(CalculationDto dto) {
         String line = MINUS + dto.getDividend() + VERTICAL_SEPARATOR + dto.getDivider();
         formattedResult.set(0, line);
     }
 
-    public void formatSecondLine(CalculationDto dto) {
+    private void formatSecondLine(CalculationDto dto) {
         StringBuilder line = new StringBuilder(formattedResult.get(1));
         int resultOfLongDivisionLength = String.valueOf(dto.getResult()).length();
         for (int i = 0; i < resultOfLongDivisionLength + 1; i++) {
@@ -112,7 +112,7 @@ public class Formatter implements Formatable {
         formattedResult.set(1, line.toString());
     }
 
-    public void formatThirdLine(CalculationDto dto) {
+    private void formatThirdLine(CalculationDto dto) {
         StringBuilder line = new StringBuilder(formattedResult.get(2));
         int spacesAfter = maxLength - line.toString().length();
         for (int i = 0; i < spacesAfter; i++) {
@@ -123,26 +123,25 @@ public class Formatter implements Formatable {
         formattedResult.set(2, line.toString());
     }
 
-    public void addSpacesBefore(StringBuilder line, int spacesBefore) {
+    private void addSpacesBefore(StringBuilder line, int spacesBefore) {
         for (int j = 0; j < spacesBefore; j++) {
             line.append(SPACE);
         }
     }
 
-    public void addSpacesAfter(StringBuilder line, int spacesAfter) {
+    private void addSpacesAfter(StringBuilder line, int spacesAfter) {
         for (int j = 0; j < spacesAfter; j++) {
             line.append(SPACE);
         }
     }
 
+    @Override
     public String createResult(CalculationDto dto) {
-        if (dto == null) {
-            throw new NullPointerException("DTO object cannot be \"null\"");
+        if (dto.equals(new CalculationDto(0, 0, 0, 0))) {
+            throw new NullPointerException("DTO cannot be empty");
+        } else if (dto == null) {
+            throw new NullPointerException("DTO cannot be \"null\"");
         }
-
-//        if (dto.equals(new CalculationDto(0, 0, 0, 0))) {
-//            throw new NullPointerException("DTO object cannot be or empty");
-//        }
 
         StringBuilder result = new StringBuilder();
 
