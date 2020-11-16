@@ -137,10 +137,12 @@ public class Formatter implements Formatable {
 
     @Override
     public String createResult(CalculationDto dto) {
+        if (dto == null) {
+            throw new NullPointerException("DTO cannot be \"null\"");
+        }
+
         if (dto.equals(new CalculationDto(0, 0, 0, 0))) {
             throw new NullPointerException("DTO cannot be empty");
-        } else if (dto == null) {
-            throw new NullPointerException("DTO cannot be \"null\"");
         }
 
         StringBuilder result = new StringBuilder();

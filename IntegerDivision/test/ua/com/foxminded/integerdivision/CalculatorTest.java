@@ -91,7 +91,7 @@ class CalculatorTest {
 
 		String actualErrorMessage = "";
 		try {
-			formatter.createResult(null);
+			formatter.createResult(emptyDto);
 		} catch (NullPointerException e) {
 			actualErrorMessage = e.getMessage();
 		}
