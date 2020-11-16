@@ -1,14 +1,14 @@
-package ua.com.foxminded.integerdivision.facede;
+package ua.com.foxminded.integerdivision.facade;
 
 import ua.com.foxminded.integerdivision.calculator.CalculationDto;
-import ua.com.foxminded.integerdivision.calculator.Formatter;
+import ua.com.foxminded.integerdivision.interfaces.Formatable;
 import ua.com.foxminded.integerdivision.calculator.LongDivisionCalculator;
 
 public class CalculatorFacade {
     private final LongDivisionCalculator calculator;
-    private final Formatter formatter;
+    private final Formatable formatter;
 
-    public CalculatorFacade(LongDivisionCalculator calculator, Formatter formatter) {
+    public CalculatorFacade(LongDivisionCalculator calculator, Formatable formatter) {
         this.calculator = calculator;
         this.formatter = formatter;
     }

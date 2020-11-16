@@ -1,7 +1,8 @@
 package ua.com.foxminded.integerdivision;
 
 import ua.com.foxminded.integerdivision.calculator.*;
-import ua.com.foxminded.integerdivision.facede.*;
+import ua.com.foxminded.integerdivision.facade.*;
+import ua.com.foxminded.integerdivision.formatter.Formatter;
 
 import java.util.Scanner;
 
