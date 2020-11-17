@@ -117,4 +117,29 @@ class CalculatorTest {
 
 		assertEquals(expectedErrorMessage, actualErrorMessage);
 	}
+
+	@Test
+	void orderTest() {
+		dividend = 654754;
+		divider = 654;
+
+		LongDivisionCalculator calculatorMock = mock(LongDivisionCalculator.class);
+		formatterMock = mock(Formatter.class);
+
+		CalculationDto dto = new LongDivisionCalculator().longDivision(dividend, divider);
+		String resultOfDivision = new Formatter().createResult(dto);
+
+		when(calculatorMock.longDivision(dividend, divider))
+				.thenReturn(dto);
+		when(formatterMock.createResult(dto))
+				.thenReturn(resultOfDivision);
+
+		CalculatorFacade calculatorFacade = new CalculatorFacade(calculatorMock, formatterMock);
+		calculatorFacade.divide(dividend, divider);
+
+		InOrder inOrder = inOrder(calculatorMock, formatterMock);
+
+		inOrder.verify(calculatorMock).longDivision(dividend, divider);
+		inOrder.verify(formatterMock).createResult(dto);
+	}
 }
