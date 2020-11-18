@@ -7,6 +7,10 @@ public class LongDivisionCalculator {
     public static final String DELIMITER = "";
 
     public CalculationDto longDivision(int dividend, int divider) {
+        if (divider == 0) {
+            throw new IllegalArgumentException("Can`t divide by zero");
+        }
+
         dividend = Math.abs(dividend);
         divider = Math.abs(divider);
 
@@ -16,10 +20,6 @@ public class LongDivisionCalculator {
 
         int result = 0;
         int remainder = 0;
-
-        if (divider == 0) {
-            throw new IllegalArgumentException("Can`t divide by zero");
-        }
 
         int dividendsZeros = -1;
         int dividersZeros = 0;
@@ -52,10 +52,12 @@ public class LongDivisionCalculator {
             } else {
             	result = concatTwoDigits(result, (intermediateDividend / divider));
                 remainder = intermediateDividend % divider;
-                collectTmpResults(intermediateDividend, intermediateDividend - remainder, intermediateDividends, intermediateDividers);
+                intermediateDividends.add(intermediateDividend);
+                intermediateDividers.add(intermediateDividend - remainder);
                 dividendsZeros++;
                 dividersZeros++;
-                collectZeros(dividendsZeros, dividersZeros, zerosBeforeDividend, zerosBeforeDivider);
+                zerosBeforeDividend.add(dividendsZeros);
+                zerosBeforeDivider.add(dividersZeros);
 
                 intermediateDividend = remainder;
 
@@ -106,17 +108,5 @@ public class LongDivisionCalculator {
 		}
         
         return digits;
-    }
-
-    private void collectZeros(int dividendsZeros, int dividersZeros,
-                              List<Integer> zerosBeforeDividend, List<Integer> zerosBeforeDivider) {
-        zerosBeforeDividend.add(dividendsZeros);
-        zerosBeforeDivider.add(dividersZeros);
-    }
-
-    private void collectTmpResults(int intermediateDividend, int intermediateDivider,
-                                   List<Integer> intermediateDividends, List<Integer> intermediateDividers) {
-        intermediateDividends.add(intermediateDividend);
-        intermediateDividers.add(intermediateDivider);
     }
 }
