@@ -25,7 +25,6 @@ class CalculatorTest {
 	private CalculatorFacade facade;
 	private String result;
 	private CalculationDto divideTwoDigitsDto;
-	private CalculationDto dividendLessThanDividerDto;
 
 	private static String DIVIDE_TWO_DIGITS_EXPECTED_RESULT = "_654754|654\n" +
 															  " 654   -----\n" +
@@ -49,30 +48,8 @@ class CalculatorTest {
 	void divideTwoNumbersWithMockingFormatterShouldEqualsDto() {
 		dividend = 654754;
 		divider = 654;
-		int divisionResult = 1001;
-		int remainder = 100;
-		List<Integer> intermediateDividends = new ArrayList<>();
-		List<Integer> intermediateDividers = new ArrayList<>();
-		List<Integer> zerosBeforeDividends = new ArrayList<>();
-		List<Integer> zerosBeforeDividers = new ArrayList<>();
 
-		intermediateDividends.add(654);
-		intermediateDividends.add(754);
-
-		intermediateDividers.add(654);
-		intermediateDividers.add(654);
-
-		zerosBeforeDividends.add(0);
-		zerosBeforeDividends.add(3);
-
-		zerosBeforeDividers.add(1);
-		zerosBeforeDividers.add(4);
-
-		CalculationDto actualDto = new CalculationDto(dividend, divider, remainder, divisionResult);
-		actualDto.setIntermediateDividends(intermediateDividends);
-		actualDto.setIntermediateDividers(intermediateDividers);
-		actualDto.setZerosBeforeDividends(zerosBeforeDividends);
-		actualDto.setZerosBeforeDividers(zerosBeforeDividers);
+		divideTwoDigitsDto = createDivideTwoDigitsDto();
 
 		facade = new CalculatorFacade(calculator, formatterMock);
 		facade.divide(dividend, divider);
@@ -82,7 +59,7 @@ class CalculatorTest {
 
 		CalculationDto capturedDto = captor.getValue();
 
-		assertEquals(actualDto, capturedDto);
+		assertEquals(divideTwoDigitsDto, capturedDto);
 	}
 
 	@Test
@@ -186,6 +163,38 @@ class CalculatorTest {
 	void divideTwoNumbersWithMockingCalculatorShouldEqualsDto() {
 		dividend = 654754;
 		divider = 654;
+
+		divideTwoDigitsDto = createDivideTwoDigitsDto();
+
+		facade = new CalculatorFacade(calculatorMock, formatter);
+
+		when(calculatorMock.longDivision(dividend, divider))
+				.thenReturn(divideTwoDigitsDto);
+
+		String result = facade.divide(dividend, divider);
+
+		assertEquals(DIVIDE_TWO_DIGITS_EXPECTED_RESULT, result);
+	}
+
+	@Test
+	void zeroDividendWithMockingCalculatorShouldEqualsDto() {
+		dividend = 0;
+		divider = 123;
+		CalculationDto dividendLessThanDividerDto = new CalculationDto(dividend, divider, 0, 0);
+
+		facade = new CalculatorFacade(calculatorMock, formatter);
+
+		when(calculatorMock.longDivision(dividend, divider))
+				.thenReturn(dividendLessThanDividerDto);
+
+		String result = facade.divide(dividend, divider);
+
+		assertEquals(DIVIDEND_LESS_THEN_DIVIDER_EXPECTED_RESULT, result);
+	}
+
+	CalculationDto createDivideTwoDigitsDto(){
+		dividend = 654754;
+		divider = 654;
 		int divisionResult = 1001;
 		int remainder = 100;
 
@@ -212,29 +221,6 @@ class CalculatorTest {
 		actualDto.setZerosBeforeDividends(zerosBeforeDividends);
 		actualDto.setZerosBeforeDividers(zerosBeforeDividers);
 
-		facade = new CalculatorFacade(calculatorMock, formatter);
-
-		when(calculatorMock.longDivision(dividend, divider))
-				.thenReturn(actualDto);
-
-		String result = facade.divide(dividend, divider);
-
-		assertEquals(DIVIDE_TWO_DIGITS_EXPECTED_RESULT, result);
-	}
-
-	@Test
-	void zeroDividendWithMockingCalculatorShouldEqualsDto() {
-		dividend = 0;
-		divider = 123;
-		CalculationDto actualDto = new CalculationDto(dividend, divider, 0, 0);
-
-		facade = new CalculatorFacade(calculatorMock, formatter);
-
-		when(calculatorMock.longDivision(dividend, divider))
-				.thenReturn(actualDto);
-
-		String result = facade.divide(dividend, divider);
-
-		assertEquals(DIVIDEND_LESS_THEN_DIVIDER_EXPECTED_RESULT, result);
+		return actualDto;
 	}
 }
