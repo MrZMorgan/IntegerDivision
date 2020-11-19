@@ -1,0 +1,112 @@
+package ua.com.foxminded.integerdivision.calculator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LongDivisionCalculator {
+    public static final String DELIMITER = "";
+
+    public CalculationDto longDivision(int dividend, int divider) {
+        if (divider == 0) {
+            throw new IllegalArgumentException("Can`t divide by zero");
+        }
+
+        dividend = Math.abs(dividend);
+        divider = Math.abs(divider);
+
+        int[] digits = getDigitsFromDividend(dividend);
+        int intermediateDividend = makeFirstDividend(digits, divider);
+        int fitsIntermediateDividend = makeFirstDividend(digits, divider);
+
+        int result = 0;
+        int remainder = 0;
+
+        int dividendsZeros = -1;
+        int dividersZeros = 0;
+
+        List<Integer> intermediateDividends = new ArrayList<>();
+        List<Integer> intermediateDividers = new ArrayList<>();
+
+        List<Integer> zerosBeforeDividend = new ArrayList<>();
+        List<Integer> zerosBeforeDivider = new ArrayList<>();
+
+        CalculationDto intermediateDto = new CalculationDto(dividend, divider, remainder, result);
+
+        if (dividend < divider) {
+            return intermediateDto;
+        }
+
+        int startPoint = String.valueOf(fitsIntermediateDividend).length() - 1;
+        for (int i = startPoint; i < digits.length; ) {
+            if (intermediateDividend < divider) {
+                intermediateDividend = concatTwoDigits(intermediateDividend, digits[i]);
+                if (intermediateDividend < divider) {
+                    while (intermediateDividend < divider) {
+                        i++;
+                        result = concatTwoDigits(result, 0);
+                        dividendsZeros++;
+                        dividersZeros++;
+                        intermediateDividend = concatTwoDigits(intermediateDividend, digits[i]);
+                    }
+                }
+            } else {
+            	result = concatTwoDigits(result, (intermediateDividend / divider));
+                remainder = intermediateDividend % divider;
+                intermediateDividends.add(intermediateDividend);
+                intermediateDividers.add(intermediateDividend - remainder);
+                dividendsZeros++;
+                dividersZeros++;
+                zerosBeforeDividend.add(dividendsZeros);
+                zerosBeforeDivider.add(dividersZeros);
+
+                intermediateDividend = remainder;
+
+                if (intermediateDividend == 0 && i > startPoint) {
+                    dividendsZeros++;
+                    dividersZeros++;
+                }
+               
+                i++;
+            }
+        }
+
+        CalculationDto dto = new CalculationDto(dividend, divider, remainder, result);
+
+        dto.setIntermediateDividends(intermediateDividends);
+        dto.setIntermediateDividers(intermediateDividers);
+        dto.setZerosBeforeDividends(zerosBeforeDividend);
+        dto.setZerosBeforeDividers(zerosBeforeDivider);
+
+        return dto;
+    }
+
+    private int makeFirstDividend(int[] digits, int divider) {
+        int firstDividend = 0;
+        for (int digit : digits) {
+            if (firstDividend < divider) {
+                firstDividend = concatTwoDigits(firstDividend, digit) ;
+            }
+        }
+        return firstDividend;
+    }
+    
+    private int concatTwoDigits(int digit1, int digit2) {
+		int result;
+		result = (int) (digit1 * (Math.pow(10, String.valueOf(digit2).length())) + digit2);
+		
+		return result;
+	}
+
+    public int[] getDigitsFromDividend(int dividend) {
+        dividend = Math.abs(dividend);
+        String dividendTmp = String.valueOf(dividend);
+        String[] digitsTmp = dividendTmp.split(DELIMITER);
+        int[] digits = new int[dividendTmp.length()];
+        
+        for (int i = 0; i < digitsTmp.length; i++) {
+			digits[i] = Integer.parseInt(digitsTmp[i]);
+		}
+        
+        return digits;
+    }
+}
